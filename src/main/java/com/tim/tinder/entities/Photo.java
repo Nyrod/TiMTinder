@@ -27,5 +27,6 @@ public class Photo {
     private byte[] photo;
 
     public Photo(byte[] photo) {
+        this.photo = photo;
     }
 }

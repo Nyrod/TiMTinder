@@ -1,4 +1,4 @@
-package com.tim.tinder;
+package com.tim.tinder.exceptions;
 
 
 public class TinderException extends Exception {

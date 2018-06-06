@@ -1,6 +1,6 @@
 package com.tim.tinder.services;
 
-import com.tim.tinder.TinderException;
+import com.tim.tinder.exceptions.TinderException;
 import com.tim.tinder.entities.Photo;
 import com.tim.tinder.entities.User;
 import com.tim.tinder.repositories.UserRepository;
