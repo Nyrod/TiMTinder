@@ -11,17 +11,16 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
-@Setter
 @Getter
-@NoArgsConstructor
+@Setter
 @AllArgsConstructor
-public class Match {
+@NoArgsConstructor
+public class Message {
 
     @Id
     @GeneratedValue
-    private Long idMatch;
-    private Boolean isMatched;
-    private Date likeDate;
-    private Boolean favouriteFrom;
-    private Boolean favouriteTo;
+    private Long idMessage;
+    private String message;
+    private Date date;
+    private Boolean received;
 }
