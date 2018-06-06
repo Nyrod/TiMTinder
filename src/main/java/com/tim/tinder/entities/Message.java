@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.util.Date;
 
 @Entity
@@ -20,6 +21,13 @@ public class Message {
     @Id
     @GeneratedValue
     private Long idMessage;
+
+    @ManyToOne
+    private Match match;
+
+    @ManyToOne
+    private User userFrom;
+
     private String message;
     private Date date;
     private Boolean received;

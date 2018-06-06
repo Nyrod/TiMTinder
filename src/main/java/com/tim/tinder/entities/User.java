@@ -5,10 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -20,6 +19,21 @@ public class User {
     @Id
     @GeneratedValue
     private Long idUser;
+
+    @OneToMany
+    private List<Interest> interests;
+
+    @OneToMany
+    private List<Photo> photos;
+
+    @OneToMany(mappedBy = "userFrom")
+    private List<Match> matchesGiven;
+
+    @OneToMany(mappedBy = "userTo")
+    private List<Match> matchesReceived;
+
+    @OneToOne
+    private Photo avatar;
 
     private String name;
     private String surname;
