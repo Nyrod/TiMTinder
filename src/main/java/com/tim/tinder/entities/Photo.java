@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,5 +23,9 @@ public class Photo {
     private Long idPhoto;
 
     @Lob
+    @Type(type="org.hibernate.type.BinaryType")
     private byte[] photo;
+
+    public Photo(byte[] photo) {
+    }
 }

@@ -2,7 +2,11 @@ package com.tim.tinder.services.interfaces;
 
 public interface PhotoService {
 
-    void addPhoto(Long userId, byte[] photo);
-    void changeAvatar(Long userId, byte[] avatar);
-    byte[] getPhoto(Long photoId);
+    void addPhotoToUser(Long idUser, byte[] photo);
+
+    void changeUserAvatar(Long idUser, byte[] avatar);
+
+    byte[] getPhoto(Long idPhoto);
+
+    void deletePhoto(long idPhoto);
 }
