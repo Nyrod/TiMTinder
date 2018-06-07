@@ -18,7 +18,7 @@ public class Interest {
 
     @Id
     @GeneratedValue
-    private Long idIntrest;
+    private Long idInterest;
 
     private String name;
 }
