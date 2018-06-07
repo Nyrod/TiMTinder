@@ -4,14 +4,18 @@ import com.tim.tinder.config.CustomUserDetails;
 import com.tim.tinder.entities.Match;
 import com.tim.tinder.entities.User;
 import com.tim.tinder.model.MatchPojo;
+import com.tim.tinder.model.UserPojo;
 import com.tim.tinder.parser.MatchToMatchPojo;
+import com.tim.tinder.parser.UserToUserPojo;
 import com.tim.tinder.repositories.MatchRepository;
 import com.tim.tinder.repositories.UserRepository;
+import com.tim.tinder.services.interfaces.InterestService;
 import com.tim.tinder.services.interfaces.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,11 +25,15 @@ public class MatchServiceImpl implements MatchService {
 
     private final UserRepository userRepository;
     private final MatchRepository matchRepository;
+    private final InterestService interestService;
+    private final EntityManager entityManager;
 
     @Autowired
-    public MatchServiceImpl(UserRepository userRepository, MatchRepository matchRepository) {
+    public MatchServiceImpl(UserRepository userRepository, MatchRepository matchRepository, InterestService interestService, EntityManager entityManager) {
         this.userRepository = userRepository;
         this.matchRepository = matchRepository;
+        this.interestService = interestService;
+        this.entityManager = entityManager;
     }
 
 
@@ -150,5 +158,51 @@ public class MatchServiceImpl implements MatchService {
         return matches;
     }
 
+    @Override
+    public UserPojo getNextUser(Long idCurrent, Double searchDistance) {
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findByLogin(userDetails.getUsername());
+        boolean found = false;
+        List<User> userList = getTenUser(idCurrent);
+        while(!found) {
+            if(userList.size() == 0)
+                found = true;
+            for(User userCheck : userList) {
+                if(!userCheck.getIdUser().equals(user.getIdUser())) {
+                    if(distanceBetweenPoints(user.getLon(), userCheck.getLon(), user.getLat(), userCheck.getLat()) <= searchDistance) {
+                        if(interestService.compareInterests(user.getInterests(), userCheck.getInterests()) >= user.getInterests().size()/3) {
+                            return UserToUserPojo.userToUserPojo(user);
+                        }
+                    }
+                }
+            }
+        }
+        return new UserPojo();
+    }
+
+    private List<User> getTenUser(Long idCurrent) {
+        return entityManager.createQuery("SELECT u from  WHERE u.idUser > " + idCurrent + " ORDER BY u.idUser asc ", User.class)
+                .setMaxResults(10)
+                .getResultList();
+    }
+
+    private double distanceBetweenPoints(double lon1, double lon2, double lat1, double lat2) {
+
+        final int R = 6371; // Radius of the earth
+
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c * 1000; // convert to meters
+
+        double height = 0;
+
+        distance = Math.pow(distance, 2) + Math.pow(height, 2);
+
+        return Math.sqrt(distance);
+    }
 
 }

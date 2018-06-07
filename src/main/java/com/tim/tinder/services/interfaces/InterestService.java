@@ -12,4 +12,6 @@ public interface InterestService {
 
     void addInterest(String interest);
 
+    int compareInterests(List<Interest> interests1, List<Interest> interests2);
+
 }

@@ -1,11 +1,13 @@
 package com.tim.tinder.services;
 
 
+import com.tim.tinder.config.CustomUserDetails;
 import com.tim.tinder.entities.User;
 import com.tim.tinder.repositories.UserRepository;
 import com.tim.tinder.services.interfaces.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
@@ -42,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void logout() {
-//        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        tokenStore.removeAccessToken(tokenStore.readAccessToken(userDetails.getPassword()));
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        tokenStore.removeAccessToken(tokenStore.readAccessToken(userDetails.getPassword()));
     }
 }

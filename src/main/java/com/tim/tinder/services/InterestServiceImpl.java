@@ -54,4 +54,15 @@ public class InterestServiceImpl implements InterestService {
         interestNew.setName(interest);
         interestRepository.save(interestNew);
     }
+
+    @Override
+    public int compareInterests(List<Interest> interests1, List<Interest> interests2) {
+        int mutualInterest = 0;
+        for(Interest interest : interests1) {
+            if(interests2.contains(interest)) {
+                mutualInterest++;
+            }
+        }
+        return mutualInterest;
+    }
 }

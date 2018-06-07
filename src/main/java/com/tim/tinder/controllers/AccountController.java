@@ -21,16 +21,6 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @RequestMapping(path = "/hello", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getHello() {
-        return "helloWorld";
-    }
-
-    @RequestMapping(path = "/private", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getPrivate() {
-        return "private";
-    }
-
     @RequestMapping(value = "/rest/checkIfLoginExist", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> checkIfLoginExist(@RequestParam("login") String login) {
         Boolean ifLoginExist = accountService.checkIfLoginExist(login);

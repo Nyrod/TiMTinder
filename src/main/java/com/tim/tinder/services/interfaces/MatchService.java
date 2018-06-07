@@ -1,6 +1,7 @@
 package com.tim.tinder.services.interfaces;
 
 import com.tim.tinder.model.MatchPojo;
+import com.tim.tinder.model.UserPojo;
 
 import java.util.List;
 
@@ -18,4 +19,5 @@ public interface MatchService {
 
     void deleteMatch(Long idMatch);
 
+    UserPojo getNextUser(Long idCurrent, Double searchDistance);
 }
