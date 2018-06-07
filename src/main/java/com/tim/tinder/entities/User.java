@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -34,6 +35,9 @@ public class User {
 
     @OneToOne
     private Photo avatar;
+
+    @ManyToMany
+    private Set<Role> roles;
 
     private String name;
     private String surname;

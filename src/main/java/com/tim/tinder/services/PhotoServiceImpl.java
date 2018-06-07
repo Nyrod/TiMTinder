@@ -1,13 +1,10 @@
 package com.tim.tinder.services;
 
 import com.tim.tinder.entities.Photo;
-import com.tim.tinder.entities.User;
 import com.tim.tinder.repositories.PhotoRepository;
 import com.tim.tinder.repositories.UserRepository;
-import com.tim.tinder.security.CustomUserDetails;
 import com.tim.tinder.services.interfaces.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,22 +26,22 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Override
     public void addPhotoToUser(MultipartFile file) {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findByLogin(userDetails.getUsername());
-        Photo photo = getPhotoFromFile(file);
-        photoRepository.save(photo);
-        user.getPhotos().add(photo);
-        userRepository.save(user);
+//        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        User user = userRepository.findByLogin(userDetails.getUsername());
+//        Photo photo = getPhotoFromFile(file);
+//        photoRepository.save(photo);
+//        user.getPhotos().add(photo);
+//        userRepository.save(user);
     }
 
     @Override
     public void changeUserAvatar( MultipartFile file) {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findByLogin(userDetails.getUsername());
-        Photo photo = getPhotoFromFile(file);
-        photoRepository.save(photo);
-        user.setAvatar(photo);
-        userRepository.save(user);
+//        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        User user = userRepository.findByLogin(userDetails.getUsername());
+//        Photo photo = getPhotoFromFile(file);
+//        photoRepository.save(photo);
+//        user.setAvatar(photo);
+//        userRepository.save(user);
     }
 
     @Override
