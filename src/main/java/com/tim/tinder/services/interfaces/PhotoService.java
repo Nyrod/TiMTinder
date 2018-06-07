@@ -1,10 +1,12 @@
 package com.tim.tinder.services.interfaces;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public interface PhotoService {
 
-    void addPhotoToUser(Long idUser, byte[] photo);
+    void addPhotoToUser(MultipartFile file);
 
-    void changeUserAvatar(Long idUser, byte[] avatar);
+    void changeUserAvatar(MultipartFile file);
 
     byte[] getPhoto(Long idPhoto);
 

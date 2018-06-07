@@ -15,7 +15,7 @@ public class Oauth2ResourceServerConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.headers().frameOptions().disable().and()
                 .authorizeRequests()
-                .antMatchers("/rest/signUp", "/").permitAll()
+                .antMatchers("/rest/register", "/").permitAll()
                 .antMatchers("/private").authenticated();
     }
 
@@ -24,5 +24,6 @@ public class Oauth2ResourceServerConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
 
 }
