@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+
     @Override
     public void updateLocalization(long idUser, double lon, double lat) {
         userRepository.updateLocalization(idUser, lon, lat);
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(String login, String password) {
         User user = new User();
-        user.setLogin(login);
+
         user.setToken(bCryptPasswordEncoder.encode(password));
         Set<Role> roles = new HashSet<>();
         roleRepository.findAll().forEach(roles::add);
