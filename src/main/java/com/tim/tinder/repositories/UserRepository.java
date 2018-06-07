@@ -15,4 +15,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query("update User u set u.lon = :lon, u.lat = :lat where u.idUser = :idUser")
     void updateLocalization(@Param("idUser")Long idUser, @Param("lon")Double lon, @Param("lat")Double lat);
 
+    User findByLogin(String login);
 }
