@@ -1,16 +1,15 @@
 package com.tim.tinder.services.interfaces;
 
-
 import com.tim.tinder.entities.Interest;
 
 import java.util.List;
 
 public interface InterestService {
 
-    void getUserInterests(long idUser);
+    List<Interest> getUserInterests(long idUser);
 
-    void updateUserInterests(long idUser, List<Long> idsInterests);
+    void updateUserInterests(long idUser, List<Long> idInterests);
 
-    void addInterest(Interest interest);
+    void addInterest(String interest);
 
 }
