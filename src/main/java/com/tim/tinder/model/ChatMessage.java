@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,4 +15,5 @@ public class ChatMessage {
 
     private Long idSender;
     private String message;
+    private Date date;
 }
