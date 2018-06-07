@@ -6,7 +6,6 @@ import com.tim.tinder.repositories.RoleRepository;
 import com.tim.tinder.repositories.UserRepository;
 import com.tim.tinder.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -17,13 +16,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
 
@@ -36,7 +33,7 @@ public class UserServiceImpl implements UserService {
     public void save(String login, String password) {
         User user = new User();
 
-        user.setToken(bCryptPasswordEncoder.encode(password));
+//        user.setToken(bCryptPasswordEncoder.encode(password));
         Set<Role> roles = new HashSet<>();
         roleRepository.findAll().forEach(roles::add);
         user.setRoles(roles);
