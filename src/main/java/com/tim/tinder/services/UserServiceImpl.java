@@ -15,8 +15,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public void updateLocalization(double lon, double lat) {
-        userRepository.updateLocalization(lon, lat);
+    public void updateLocalization(long idUser, double lon, double lat) {
+        userRepository.updateLocalization(idUser, lon, lat);
     }
 
     @Override

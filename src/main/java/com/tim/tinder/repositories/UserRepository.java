@@ -12,7 +12,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     @Modifying
     @Transactional
-    @Query("update User u set u.lon = :lon, u.lat = :lat")
-    void updateLocalization(@Param("lon")Double lon, @Param("lat")Double lat);
+    @Query("update User u set u.lon = :lon, u.lat = :lat where u.idUser = :idUser")
+    void updateLocalization(@Param("idUser")Long idUser, @Param("lon")Double lon, @Param("lat")Double lat);
 
 }

@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    void updateLocalization(double lon, double lat);
+    void updateLocalization(long idUser, double lon, double lat);
 
     void updateUser(User user);
 
