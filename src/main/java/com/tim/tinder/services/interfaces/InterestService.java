@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface InterestService {
 
-    List<Interest> getUserInterests(long idUser);
+    List<Interest> getUserInterests(Long idUser);
 
-    void updateUserInterests(long idUser, List<Long> idInterests);
+    void updateUserInterests(List<Long> idInterests);
 
     void addInterest(String interest);
 

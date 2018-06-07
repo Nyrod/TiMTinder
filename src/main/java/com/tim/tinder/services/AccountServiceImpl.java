@@ -5,30 +5,31 @@ import com.tim.tinder.entities.User;
 import com.tim.tinder.repositories.UserRepository;
 import com.tim.tinder.services.interfaces.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AccountServiceImpl implements AccountService {
 
     private final UserRepository userRepository;
-//    private final TokenStore tokenStore;
-
-//    @Autowired
-//    public AccountServiceImpl(UserRepository userRepository, @Qualifier("getTokenStore")TokenStore tokenStore) {
-//        this.userRepository = userRepository;
-//        this.tokenStore = tokenStore;
-//    }
+    private final TokenStore tokenStore;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AccountServiceImpl(UserRepository userRepository) {
+    public AccountServiceImpl(UserRepository userRepository, @Qualifier("getTokenStore")TokenStore tokenStore, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.tokenStore = tokenStore;
+        this.passwordEncoder = passwordEncoder;
     }
+
 
     @Override
     public void register(String login, String password) {
         User user = new User();
         user.setLogin(login);
-        user.setToken(password);
+        user.setToken(passwordEncoder.encode(password));
         user.setIsAdmin(false);
         userRepository.save(user);
         System.out.println(user.getToken());

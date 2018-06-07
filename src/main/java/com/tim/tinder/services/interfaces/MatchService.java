@@ -1,8 +1,21 @@
 package com.tim.tinder.services.interfaces;
 
+import com.tim.tinder.model.MatchPojo;
+
+import java.util.List;
+
 public interface MatchService {
 
-    void giveLike(long userFrom, long userTo);
+    MatchPojo giveLike(Long idUserTo);
 
-    void giveFavourite(long userFrom, long userTo);
+    MatchPojo giveFavourite(Long idMatch);
+
+    List<MatchPojo> getAllMatches();
+
+    List<MatchPojo> getMatchesReceived();
+
+    List<MatchPojo> getMatchesGiven();
+
+    void deleteMatch(Long idMatch);
+
 }

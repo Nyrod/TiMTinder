@@ -1,17 +1,20 @@
 package com.tim.tinder.services;
 
 
+import com.tim.tinder.config.CustomUserDetails;
 import com.tim.tinder.entities.Interest;
 import com.tim.tinder.entities.User;
 import com.tim.tinder.repositories.InterestRepository;
 import com.tim.tinder.repositories.UserRepository;
 import com.tim.tinder.services.interfaces.InterestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+@Service
 public class InterestServiceImpl implements InterestService {
 
     InterestRepository interestRepository;
@@ -24,25 +27,25 @@ public class InterestServiceImpl implements InterestService {
     }
 
     @Override
-    public List<Interest> getUserInterests(long idUser) {
-        Optional<User> byId = userRepository.findById(idUser);
-        if(byId.isPresent()) {
-            return byId.get().getInterests();
+    public List<Interest> getUserInterests(Long idUser) {
+        User byId = userRepository.findOne(idUser);
+        if(byId != null) {
+            return byId.getInterests();
         }
         return new ArrayList<>();
     }
 
     @Override
-    public void updateUserInterests(long idUser, List<Long> idInterests) {
-        Iterable<Interest> allById = interestRepository.findAllById(idInterests);
+    public void updateUserInterests(List<Long> idInterests) {
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findByLogin(userDetails.getUsername());
+
+        Iterable<Interest> allById = interestRepository.findAll(idInterests);
         List<Interest> interestList = new ArrayList<>();
         allById.forEach(interestList::add);
-        Optional<User> byId = userRepository.findById(idUser);
-        if(byId.isPresent()) {
-            User user = byId.get();
-            user.setInterests(interestList);
-            userRepository.save(user);
-        }
+
+        user.setInterests(interestList);
+        userRepository.save(user);
     }
 
     @Override

@@ -1,7 +1,11 @@
 package com.tim.tinder.services.interfaces;
 
+import com.tim.tinder.model.UserPojo;
+
 public interface UserService {
 
-    void updateLocalization(long idUser, double lon, double lat);
-    void save(String login, String password);
+    void updateLocalization(double lon, double lat);
+
+    UserPojo updateUser(UserPojo userPojo);
+
 }
