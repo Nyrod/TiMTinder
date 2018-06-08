@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,14 +25,12 @@ public class MatchServiceImpl implements MatchService {
     private final UserRepository userRepository;
     private final MatchRepository matchRepository;
     private final InterestService interestService;
-    private final EntityManager entityManager;
 
     @Autowired
-    public MatchServiceImpl(UserRepository userRepository, MatchRepository matchRepository, InterestService interestService, EntityManager entityManager) {
+    public MatchServiceImpl(UserRepository userRepository, MatchRepository matchRepository, InterestService interestService) {
         this.userRepository = userRepository;
         this.matchRepository = matchRepository;
         this.interestService = interestService;
-        this.entityManager = entityManager;
     }
 
 
@@ -163,7 +160,8 @@ public class MatchServiceImpl implements MatchService {
         CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findByLogin(userDetails.getUsername());
         boolean found = false;
-        List<User> userList = getTenUser(idCurrent);
+        List<User> userList = userRepository.findTop10ByIdUserGreaterThanOrderByIdUserAsc(idCurrent);
+        userList.forEach(a -> System.out.println(UserToUserPojo.userToUserPojo(a)));
         while(!found) {
             if(userList.size() == 0)
                 found = true;
@@ -176,15 +174,11 @@ public class MatchServiceImpl implements MatchService {
                     }
                 }
             }
+            userList = userRepository.findTop10ByIdUserGreaterThanOrderByIdUserAsc(idCurrent);
         }
         return new UserPojo();
     }
 
-    private List<User> getTenUser(Long idCurrent) {
-        return entityManager.createQuery("SELECT u from  WHERE u.idUser > " + idCurrent + " ORDER BY u.idUser asc ", User.class)
-                .setMaxResults(10)
-                .getResultList();
-    }
 
     private double distanceBetweenPoints(double lon1, double lon2, double lat1, double lat2) {
 

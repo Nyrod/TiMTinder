@@ -34,7 +34,6 @@ public class AccountServiceImpl implements AccountService {
         user.setToken(passwordEncoder.encode(password));
         user.setIsAdmin(false);
         userRepository.save(user);
-        System.out.println(user.getToken());
     }
 
     @Override

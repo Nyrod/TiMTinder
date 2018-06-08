@@ -13,10 +13,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
-public class TinderApplication {
+public class TinderApplication{
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    AuthenticationManagerBuilder authenticationManagerBuilder;
+
 
     public static void main(String[] args) {
         SpringApplication.run(TinderApplication.class, args);
@@ -36,4 +40,5 @@ public class TinderApplication {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

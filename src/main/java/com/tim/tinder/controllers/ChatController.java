@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
-@RequestMapping("/rest")
+@RequestMapping("/rest/chat")
 public class ChatController {
 
     private ChatService chatService;

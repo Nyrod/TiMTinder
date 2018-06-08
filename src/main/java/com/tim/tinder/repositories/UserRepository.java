@@ -19,8 +19,9 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     User findByLogin(String login);
 
-    @Modifying
-    @Transactional
-    @Query("select u from User u where u.idUser > :idUser order by u.idUser asc ")
-    List<User> find10NextUser(@Param("idUser")Long idUser);
+//    @Transactional
+//    @Query("select u from User u where u.idUser > :idUser order by u.idUser asc ")
+//    List<User> find10NextUser(@Param("idUser")Long idUser);
+
+    List<User> findTop10ByIdUserGreaterThanOrderByIdUserAsc(Long idUser);
 }

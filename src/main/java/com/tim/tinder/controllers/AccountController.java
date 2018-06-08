@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequestMapping("/rest")
 public class AccountController {
 
     private AccountService accountService;
@@ -21,19 +22,19 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @RequestMapping(value = "/rest/checkIfLoginExist", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/checkIfLoginExist", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> checkIfLoginExist(@RequestParam("login") String login) {
         Boolean ifLoginExist = accountService.checkIfLoginExist(login);
         return new ResponseEntity<>(ifLoginExist, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/rest/logout", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> logout() {
         accountService.logout();
         return new ResponseEntity<>(new Response("Logout"), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/rest/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> register(@RequestParam("login") String login, @RequestParam("password") String password) {
         accountService.register(login, password);
         return new ResponseEntity<>(new Response("Registered"), HttpStatus.OK);

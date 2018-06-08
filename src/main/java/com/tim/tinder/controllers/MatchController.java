@@ -2,6 +2,7 @@ package com.tim.tinder.controllers;
 
 import com.tim.tinder.model.MatchPojo;
 import com.tim.tinder.model.Response;
+import com.tim.tinder.model.UserPojo;
 import com.tim.tinder.services.interfaces.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,5 +52,10 @@ public class MatchController {
     public ResponseEntity<Response> deleteMatch(@RequestParam("idMatch")Long idMatch) {
         matchService.deleteMatch(idMatch);
         return new ResponseEntity<>(new Response("Usunięto match o id " + idMatch), HttpStatus.OK);
+    }
+
+    @GetMapping("/getNext")
+    public ResponseEntity<UserPojo> getNext(@RequestParam("idCurrent")Long idCurrent, @RequestParam("searchDistance")Double searchDistance) {
+        return new ResponseEntity<>(matchService.getNextUser(idCurrent, searchDistance), HttpStatus.OK);
     }
 }

@@ -35,4 +35,21 @@ public class UserPojo {
     private String sex;
 
     private String lookingFor;
+
+    @Override
+    public String toString() {
+        return "UserPojo{" +
+                "idUser=" + idUser +
+                ", photos=" + photos +
+                ", avatar=" + avatar +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", phone='" + phone + '\'' +
+                ", birthday=" + birthday +
+                ", description='" + description + '\'' +
+                ", isAdmin=" + isAdmin +
+                ", sex='" + sex + '\'' +
+                ", lookingFor='" + lookingFor + '\'' +
+                '}';
+    }
 }
