@@ -8,4 +8,7 @@ public interface UserService {
 
     UserPojo updateUser(UserPojo userPojo);
 
+    UserPojo getUser(Long idUser);
+
+    UserPojo getCurrentUser();
 }

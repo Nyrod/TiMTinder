@@ -1,5 +1,6 @@
 package com.tim.tinder.model;
 
+import com.tim.tinder.entities.Interest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,8 @@ public class UserPojo {
     private String sex;
 
     private String lookingFor;
+
+    private List<Interest> interests;
 
     @Override
     public String toString() {

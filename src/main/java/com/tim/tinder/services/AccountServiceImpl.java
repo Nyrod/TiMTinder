@@ -44,6 +44,8 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void logout() {
         CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(userDetails.getPassword());
+        tokenStore.readAccessToken(userDetails.getPassword());
         tokenStore.removeAccessToken(tokenStore.readAccessToken(userDetails.getPassword()));
     }
 }

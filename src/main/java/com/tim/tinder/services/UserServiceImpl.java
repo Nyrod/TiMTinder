@@ -3,6 +3,7 @@ package com.tim.tinder.services;
 import com.tim.tinder.config.CustomUserDetails;
 import com.tim.tinder.entities.User;
 import com.tim.tinder.model.UserPojo;
+import com.tim.tinder.parser.UserToUserPojo;
 import com.tim.tinder.repositories.UserRepository;
 import com.tim.tinder.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,17 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
         }
         return userPojo;
+    }
+
+    @Override
+    public UserPojo getUser(Long idUser) {
+        return UserToUserPojo.userToUserPojo(userRepository.findOne(idUser));
+    }
+
+    @Override
+    public UserPojo getCurrentUser() {
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return UserToUserPojo.userToUserPojo(userRepository.findByLogin(userDetails.getUsername()));
     }
 
     private void updateUserFields(UserPojo userPojo, User user) {

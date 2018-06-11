@@ -40,5 +40,4 @@ public class TinderApplication{
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }
