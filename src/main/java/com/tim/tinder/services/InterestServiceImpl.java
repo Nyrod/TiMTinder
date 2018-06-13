@@ -1,14 +1,13 @@
 package com.tim.tinder.services;
 
 
-import com.tim.tinder.config.CustomUserDetails;
 import com.tim.tinder.entities.Interest;
 import com.tim.tinder.entities.User;
 import com.tim.tinder.repositories.InterestRepository;
 import com.tim.tinder.repositories.UserRepository;
 import com.tim.tinder.services.interfaces.InterestService;
+import com.tim.tinder.services.interfaces.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,28 +18,19 @@ public class InterestServiceImpl implements InterestService {
 
     InterestRepository interestRepository;
     UserRepository userRepository;
+    TokenService tokenService;
 
     @Autowired
-    public InterestServiceImpl(InterestRepository interestRepository, UserRepository userRepository) {
+    public InterestServiceImpl(InterestRepository interestRepository, UserRepository userRepository, TokenService tokenService) {
         this.interestRepository = interestRepository;
         this.userRepository = userRepository;
+        this.tokenService = tokenService;
     }
 
     @Override
-    public List<Interest> getUserInterests(Long idUser) {
-        User byId = userRepository.findOne(idUser);
-        if(byId != null) {
-            return byId.getInterests();
-        }
-        return new ArrayList<>();
-    }
-
-    @Override
-    public void updateUserInterests(List<Long> idInterests) {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findByLogin(userDetails.getUsername());
-
-        Iterable<Interest> allById = interestRepository.findAll(idInterests);
+    public void updateUserInterests(String token, List<Long> idInterests) {
+        User user = tokenService.getUserByToken(token);
+        Iterable<Interest> allById = interestRepository.findAllById(idInterests);
         List<Interest> interestList = new ArrayList<>();
         allById.forEach(interestList::add);
 
@@ -49,10 +39,13 @@ public class InterestServiceImpl implements InterestService {
     }
 
     @Override
-    public void addInterest(String interest) {
-        Interest interestNew = new Interest();
-        interestNew.setName(interest);
-        interestRepository.save(interestNew);
+    public void addInterest(String token, String interest) {
+        User user = tokenService.getUserByToken(token);
+        if(user.getIsAdmin()) {
+            Interest interestNew = new Interest();
+            interestNew.setName(interest);
+            interestRepository.save(interestNew);
+        }
     }
 
     @Override

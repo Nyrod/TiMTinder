@@ -10,6 +10,7 @@ public class UserToUserPojo {
 
     public static UserPojo userToUserPojo(User user) {
         UserPojo userPojo = new UserPojo();
+        userPojo.setIdUser(user.getIdUser());
         userPojo.setName(user.getName());
         userPojo.setName(user.getName());
         userPojo.setSurname(user.getSurname());

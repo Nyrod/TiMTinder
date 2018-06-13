@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface InterestService {
 
-    List<Interest> getUserInterests(Long idUser);
+    //List<Interest> getUserInterests(Long idUser);
 
-    void updateUserInterests(List<Long> idInterests);
+    void updateUserInterests(String token, List<Long> idInterests);
 
-    void addInterest(String interest);
+    void addInterest(String token, String interest);
 
     int compareInterests(List<Interest> interests1, List<Interest> interests2);
 

@@ -1,6 +1,5 @@
 package com.tim.tinder.services;
 
-import com.tim.tinder.config.CustomUserDetails;
 import com.tim.tinder.entities.Match;
 import com.tim.tinder.entities.User;
 import com.tim.tinder.model.MatchPojo;
@@ -11,8 +10,8 @@ import com.tim.tinder.repositories.MatchRepository;
 import com.tim.tinder.repositories.UserRepository;
 import com.tim.tinder.services.interfaces.InterestService;
 import com.tim.tinder.services.interfaces.MatchService;
+import com.tim.tinder.services.interfaces.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,20 +24,21 @@ public class MatchServiceImpl implements MatchService {
     private final UserRepository userRepository;
     private final MatchRepository matchRepository;
     private final InterestService interestService;
+    private final TokenService tokenService;
 
     @Autowired
-    public MatchServiceImpl(UserRepository userRepository, MatchRepository matchRepository, InterestService interestService) {
+    public MatchServiceImpl(UserRepository userRepository, MatchRepository matchRepository, InterestService interestService, TokenService tokenService) {
         this.userRepository = userRepository;
         this.matchRepository = matchRepository;
         this.interestService = interestService;
+        this.tokenService = tokenService;
     }
 
 
     @Override
-    public MatchPojo giveLike(Long idUserTo) {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User userFrom = userRepository.findByLogin(userDetails.getUsername());
-        User userTo = userRepository.findOne(idUserTo);
+    public MatchPojo giveLike(String token, Long idUserTo) {
+        User userFrom = tokenService.getUserByToken(token);
+        User userTo = userRepository.findById(idUserTo).get();
 
         List<Match> matchesGiven = userTo.getMatchesGiven();
         for (Match match : matchesGiven) {
@@ -62,11 +62,9 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public MatchPojo giveFavourite(Long idMatch) {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User userFrom = userRepository.findByLogin(userDetails.getUsername());
-
-        Match match = matchRepository.findOne(idMatch);
+    public MatchPojo giveFavourite(String token, Long idMatch) {
+        User userFrom = tokenService.getUserByToken(token);
+        Match match = matchRepository.findById(idMatch).get();
         if (match.getUserFrom().getIdUser().equals(userFrom.getIdUser())) {
             match.setFavouriteFrom(true);
             matchRepository.save(match);
@@ -80,9 +78,8 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public List<MatchPojo> getAllMatches() {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User userFrom = userRepository.findByLogin(userDetails.getUsername());
+    public List<MatchPojo> getAllMatches(String token) {
+        User userFrom = tokenService.getUserByToken(token);
 
         List<MatchPojo> matches = new ArrayList<>();
 
@@ -101,9 +98,8 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public List<MatchPojo> getMatchesGiven() {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User userFrom = userRepository.findByLogin(userDetails.getUsername());
+    public List<MatchPojo> getMatchesGiven(String token) {
+        User userFrom = tokenService.getUserByToken(token);
 
         List<MatchPojo> matches = new ArrayList<>();
 
@@ -116,11 +112,10 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public void deleteMatch(Long idMatch) {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User userFrom = userRepository.findByLogin(userDetails.getUsername());
+    public void deleteMatch(String token, Long idMatch) {
+        User userFrom = tokenService.getUserByToken(token);
 
-        Match match = matchRepository.findOne(idMatch);
+        Match match = matchRepository.findById(idMatch).get();
         if(match.getIsMatched()) {
             if (match.getUserFrom().getIdUser().equals(userFrom.getIdUser())) {
                 match.setIsMatched(false);
@@ -136,14 +131,13 @@ public class MatchServiceImpl implements MatchService {
             }
             matchRepository.save(match);
         } else {
-            matchRepository.delete(idMatch);
+            matchRepository.delete(match);
         }
     }
 
     @Override
-    public List<MatchPojo> getMatchesReceived() {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User userFrom = userRepository.findByLogin(userDetails.getUsername());
+    public List<MatchPojo> getMatchesReceived(String token) {
+        User userFrom = tokenService.getUserByToken(token);
 
         List<MatchPojo> matches = new ArrayList<>();
 
@@ -156,9 +150,8 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public UserPojo getNextUser(Long idCurrent, Double searchDistance) {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findByLogin(userDetails.getUsername());
+    public UserPojo getNextUser(String token, Long idCurrent, Double searchDistance) {
+        User user = tokenService.getUserByToken(token);
         boolean found = false;
         List<User> userList = userRepository.findTop10ByIdUserGreaterThanOrderByIdUserAsc(idCurrent);
         userList.forEach(a -> System.out.println(UserToUserPojo.userToUserPojo(a)));

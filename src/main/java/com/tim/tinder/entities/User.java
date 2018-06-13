@@ -43,7 +43,7 @@ public class User {
     private Date birthday;
     private String description;
     private String login;
-    private String token;
+    private String password;
     private Boolean isAdmin;
     private String sex;
     private String lookingFor;

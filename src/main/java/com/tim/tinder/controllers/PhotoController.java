@@ -24,13 +24,13 @@ public class PhotoController {
     }
 
     @PostMapping("/addPhoto")
-    public ResponseEntity<Long> addPhoto(@RequestBody MultipartFile photo) {
-       return new ResponseEntity<>(photoService.addPhotoToUser(photo), HttpStatus.OK);
+    public ResponseEntity<Long> addPhoto(@RequestHeader("access_token")String token, @RequestBody MultipartFile photo) {
+       return new ResponseEntity<>(photoService.addPhotoToUser(token, photo), HttpStatus.OK);
     }
 
     @PostMapping("/changeAvatar")
-    public ResponseEntity<Long> changeAvatar(@RequestBody MultipartFile photo) {
-        return new ResponseEntity<>(photoService.changeUserAvatar(photo), HttpStatus.OK);
+    public ResponseEntity<Long> changeAvatar(@RequestHeader("access_token")String token, @RequestBody MultipartFile photo) {
+        return new ResponseEntity<>(photoService.changeUserAvatar(token, photo), HttpStatus.OK);
     }
 
     @GetMapping("/getPhoto")
@@ -39,8 +39,8 @@ public class PhotoController {
     }
 
     @PostMapping("/deletePhoto")
-    public ResponseEntity<Response> deletePhoto(@RequestBody Id idPhoto) {
-        photoService.deletePhoto(idPhoto.getId());
+    public ResponseEntity<Response> deletePhoto(@RequestHeader("access_token")String token, @RequestBody Id idPhoto) {
+        photoService.deletePhoto(token, idPhoto.getId());
         return new ResponseEntity<>(new Response("Usunieto zdjecie o id " + idPhoto.getId()), HttpStatus.OK);
     }
 }

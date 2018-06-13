@@ -7,17 +7,17 @@ import java.util.List;
 
 public interface MatchService {
 
-    MatchPojo giveLike(Long idUserTo);
+    MatchPojo giveLike(String token, Long idUserTo);
 
-    MatchPojo giveFavourite(Long idMatch);
+    MatchPojo giveFavourite(String token, Long idMatch);
 
-    List<MatchPojo> getAllMatches();
+    List<MatchPojo> getAllMatches(String token);
 
-    List<MatchPojo> getMatchesReceived();
+    List<MatchPojo> getMatchesReceived(String token);
 
-    List<MatchPojo> getMatchesGiven();
+    List<MatchPojo> getMatchesGiven(String token);
 
-    void deleteMatch(Long idMatch);
+    void deleteMatch(String token, Long idMatch);
 
-    UserPojo getNextUser(Long idCurrent, Double searchDistance);
+    UserPojo getNextUser(String token, Long idCurrent, Double searchDistance);
 }

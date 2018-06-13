@@ -34,7 +34,13 @@
             <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
             <!--<scope>provided</scope>-->
         <!--</dependency>-->
-        <dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>5.0.5.RELEASE</version>
+		</dependency>
+
+		<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>

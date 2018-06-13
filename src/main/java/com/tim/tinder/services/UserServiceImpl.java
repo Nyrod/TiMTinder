@@ -1,41 +1,40 @@
 package com.tim.tinder.services;
 
-import com.tim.tinder.config.CustomUserDetails;
 import com.tim.tinder.entities.User;
 import com.tim.tinder.model.UserPojo;
 import com.tim.tinder.parser.UserToUserPojo;
 import com.tim.tinder.repositories.UserRepository;
+import com.tim.tinder.services.interfaces.TokenService;
 import com.tim.tinder.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final TokenService tokenService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, TokenService tokenService) {
         this.userRepository = userRepository;
+        this.tokenService = tokenService;
     }
 
     @Override
-    public void updateLocalization(double lon, double lat) {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findByLogin(userDetails.getUsername());
+    public void updateLocalization(String token, double lon, double lat) {
+        User user = tokenService.getUserByToken(token);
         userRepository.updateLocalization(user.getIdUser(), lon, lat);
     }
 
     @Override
-    public UserPojo updateUser(UserPojo userPojo) {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findByLogin(userDetails.getUsername());
+    public UserPojo updateUser(String token, UserPojo userPojo) {
+        User user = tokenService.getUserByToken(token);
         if (userPojo.getIdUser().equals(user.getIdUser())) {
             updateUserFields(userPojo, user);
             userRepository.save(user);
         } else if (user.getIsAdmin()) {
-            user = userRepository.findOne(userPojo.getIdUser());
+            user = userRepository.findById(userPojo.getIdUser()).get();
             updateUserFields(userPojo, user);
             userRepository.save(user);
         }
@@ -44,13 +43,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserPojo getUser(Long idUser) {
-        return UserToUserPojo.userToUserPojo(userRepository.findOne(idUser));
+        //return UserToUserPojo.userToUserPojo(userRepository.findOne(idUser));
+        return new UserPojo();
     }
 
     @Override
-    public UserPojo getCurrentUser() {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return UserToUserPojo.userToUserPojo(userRepository.findByLogin(userDetails.getUsername()));
+    public UserPojo getCurrentUser(String token) {
+        User user = tokenService.getUserByToken(token);
+        if (user == null) {
+            return new UserPojo();
+        }
+        return UserToUserPojo.userToUserPojo(user);
+    }
+
+    @Override
+    public User getUserEntity(Long idUser) {
+        return userRepository.findById(idUser).get();
     }
 
     private void updateUserFields(UserPojo userPojo, User user) {

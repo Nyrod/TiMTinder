@@ -1,15 +1,14 @@
 package com.tim.tinder.services;
 
-import com.tim.tinder.config.CustomUserDetails;
 import com.tim.tinder.entities.Photo;
 import com.tim.tinder.entities.User;
 import com.tim.tinder.repositories.PhotoRepository;
 import com.tim.tinder.repositories.UserRepository;
 import com.tim.tinder.services.interfaces.PhotoService;
+import com.tim.tinder.services.interfaces.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,18 +20,19 @@ public class PhotoServiceImpl implements PhotoService {
     private final UserRepository userRepository;
 
     private final PhotoRepository photoRepository;
+    private final TokenService tokenService;
 
     @Autowired
-    public PhotoServiceImpl(UserRepository userRepository, PhotoRepository photoRepository) {
+    public PhotoServiceImpl(UserRepository userRepository, PhotoRepository photoRepository, TokenService tokenService) {
         this.userRepository = userRepository;
         this.photoRepository = photoRepository;
+        this.tokenService = tokenService;
     }
 
 
     @Override
-    public Long addPhotoToUser(MultipartFile file) {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findByLogin(userDetails.getUsername());
+    public Long addPhotoToUser(String token, MultipartFile file) {
+        User user = tokenService.getUserByToken(token);
         Photo photo = getPhotoFromFile(file);
         photo = photoRepository.save(photo);
         user.getPhotos().add(photo);
@@ -41,9 +41,8 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public Long changeUserAvatar(MultipartFile file) {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findByLogin(userDetails.getUsername());
+    public Long changeUserAvatar(String token,MultipartFile file) {
+       User user = tokenService.getUserByToken(token);
         Photo photo = getPhotoFromFile(file);
         photo = photoRepository.save(photo);
         user.setAvatar(photo);
@@ -53,16 +52,15 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Override
     public Resource getPhoto(Long idPhoto) {
-        return new ByteArrayResource(photoRepository.findOne(idPhoto).getPhoto());
+        return new ByteArrayResource(photoRepository.findById(idPhoto).get().getPhoto());
     }
 
     @Override
-    public void deletePhoto(Long idPhoto) {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findByLogin(userDetails.getUsername());
-        Photo photo = photoRepository.findOne(idPhoto);
+    public void deletePhoto(String token, Long idPhoto) {
+        User user = tokenService.getUserByToken(token);
+        Photo photo = photoRepository.findById(idPhoto).get();
         user.getPhotos().remove(photo);
-        photoRepository.delete(idPhoto);
+        photoRepository.delete(photo);
     }
 
     private Photo getPhotoFromFile(MultipartFile file) {

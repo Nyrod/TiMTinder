@@ -7,5 +7,9 @@ public interface AccountService {
 
     boolean checkIfLoginExist(String login);
 
-    void logout();
+    void logout(String token);
+
+    String login(String login, String password);
+
+    Long getIdUserByToken(String token);
 }

@@ -29,8 +29,8 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> logout() {
-        accountService.logout();
+    public ResponseEntity<Response> logout(@RequestParam("access_token") String token) {
+        accountService.logout(token);
         return new ResponseEntity<>(new Response("Logout"), HttpStatus.OK);
     }
 
@@ -38,6 +38,15 @@ public class AccountController {
     public ResponseEntity<Response> register(@RequestBody Register register) {
         accountService.register(register.getLogin(), register.getPassword());
         return new ResponseEntity<>(new Response("Registered"), HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Response> login(@RequestBody Register register) {
+        String token = accountService.login(register.getLogin(), register.getPassword());
+        if(token == null) {
+            return new ResponseEntity<>(new Response(), HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(new Response(token), HttpStatus.OK);
     }
 
 }
