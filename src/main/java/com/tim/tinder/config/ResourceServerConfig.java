@@ -10,9 +10,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.headers().frameOptions().disable().and()
-                .authorizeRequests()
-                .antMatchers("/rest/register", "/").permitAll()
-                .antMatchers("/private").authenticated();
+//        http.headers().frameOptions().disable().and()
+//                .authorizeRequests()
+//                .antMatchers("/rest/register", "/").permitAll()
+//                .antMatchers("/private").authenticated();
+        http.authorizeRequests().anyRequest().authenticated();
     }
 }

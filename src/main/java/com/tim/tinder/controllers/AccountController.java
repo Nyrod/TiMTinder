@@ -36,9 +36,6 @@ public class AccountController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> register(@RequestBody Register register) {
-        System.out.println(register.getLogin());
-        System.out.println(register.getPassword());
-
         accountService.register(register.getLogin(), register.getPassword());
         return new ResponseEntity<>(new Response("Registered"), HttpStatus.OK);
     }

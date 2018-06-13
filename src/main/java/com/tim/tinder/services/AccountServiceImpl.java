@@ -20,20 +20,21 @@ public class AccountServiceImpl implements AccountService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AccountServiceImpl(UserRepository userRepository, @Qualifier("getTokenStore")TokenStore tokenStore, PasswordEncoder passwordEncoder) {
+    public AccountServiceImpl(UserRepository userRepository, @Qualifier("getTokenStore") TokenStore tokenStore, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.tokenStore = tokenStore;
         this.passwordEncoder = passwordEncoder;
     }
 
-
     @Override
     public void register(String login, String password) {
-        User user = new User();
-        user.setLogin(login);
-        user.setToken(passwordEncoder.encode(password));
-        user.setIsAdmin(false);
-        userRepository.save(user);
+        if (!checkIfLoginExist(login)) {
+            User user = new User();
+            user.setLogin(login);
+            user.setToken(passwordEncoder.encode(password));
+            user.setIsAdmin(false);
+            userRepository.save(user);
+        }
     }
 
     @Override
@@ -44,7 +45,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void logout() {
         CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println(userDetails.getPassword());
         tokenStore.readAccessToken(userDetails.getPassword());
         tokenStore.removeAccessToken(tokenStore.readAccessToken(userDetails.getPassword()));
     }

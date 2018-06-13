@@ -40,6 +40,6 @@ public class ChatController {
     @RequestMapping(value = "/getAllMessage", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ChatMessage>> getAllChatMessage(@RequestParam("idChat") Long idChat) {
         List<ChatMessage> allMessage = chatService.getAllMessage(idChat);
-        return new ResponseEntity<List<ChatMessage>>(allMessage, HttpStatus.OK);
+        return new ResponseEntity<>(allMessage, HttpStatus.OK);
     }
 }
