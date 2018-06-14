@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserPojo updateUser(String token, UserPojo userPojo) {
         User user = tokenService.getUserByToken(token);
+        System.out.println(userPojo);
         if (userPojo.getIdUser().equals(user.getIdUser())) {
             updateUserFields(userPojo, user);
             userRepository.save(user);
@@ -43,8 +44,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserPojo getUser(Long idUser) {
-        //return UserToUserPojo.userToUserPojo(userRepository.findOne(idUser));
-        return new UserPojo();
+        User user = userRepository.findById(idUser).get();
+        if(user == null) {
+            return new UserPojo();
+        }
+        return UserToUserPojo.userToUserPojo(user);
     }
 
     @Override
@@ -53,6 +57,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             return new UserPojo();
         }
+        System.out.println(UserToUserPojo.userToUserPojo(user));
         return UserToUserPojo.userToUserPojo(user);
     }
 

@@ -41,8 +41,13 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public Long changeUserAvatar(String token,MultipartFile file) {
-       User user = tokenService.getUserByToken(token);
+    public Long changeUserAvatar(String token, MultipartFile file) {
+        User user = tokenService.getUserByToken(token);
+        if (user.getAvatar() != null) {
+            Photo photo = user.getAvatar();
+            user.setAvatar(null);
+            photoRepository.delete(photo);
+        }
         Photo photo = getPhotoFromFile(file);
         photo = photoRepository.save(photo);
         user.setAvatar(photo);

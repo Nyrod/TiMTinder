@@ -24,12 +24,12 @@ public class PhotoController {
     }
 
     @PostMapping("/addPhoto")
-    public ResponseEntity<Long> addPhoto(@RequestHeader("access_token")String token, @RequestBody MultipartFile photo) {
+    public ResponseEntity<Long> addPhoto(@RequestHeader("access_token")String token, @RequestParam("file") MultipartFile photo) {
        return new ResponseEntity<>(photoService.addPhotoToUser(token, photo), HttpStatus.OK);
     }
 
     @PostMapping("/changeAvatar")
-    public ResponseEntity<Long> changeAvatar(@RequestHeader("access_token")String token, @RequestBody MultipartFile photo) {
+    public ResponseEntity<Long> changeAvatar(@RequestHeader("access_token")String token, @RequestParam("file") MultipartFile photo) {
         return new ResponseEntity<>(photoService.changeUserAvatar(token, photo), HttpStatus.OK);
     }
 

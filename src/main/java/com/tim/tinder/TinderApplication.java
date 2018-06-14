@@ -16,7 +16,6 @@ public class TinderApplication{
         SpringApplication.run(TinderApplication.class, args);
     }
 
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

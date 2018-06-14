@@ -6,10 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -24,6 +21,7 @@ public class Photo {
 
     @Lob
     @Type(type="org.hibernate.type.BinaryType")
+    @Column(columnDefinition = "mediumblob")
     private byte[] photo;
 
     public Photo(byte[] photo) {

@@ -23,7 +23,9 @@ public class UserToUserPojo {
         List<Long> ids = new ArrayList<>();
         user.getPhotos().forEach(a -> ids.add(a.getIdPhoto()));
         userPojo.setPhotos(ids);
-        //userPojo.setAvatar(user.getAvatar().getIdPhoto());
+        if(user.getAvatar() != null) {
+            userPojo.setAvatar(user.getAvatar().getIdPhoto());
+        }
 
         return userPojo;
     }

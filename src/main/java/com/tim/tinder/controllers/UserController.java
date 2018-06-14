@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/updateUser")
-    public ResponseEntity<UserPojo> updateUser(@RequestHeader("access_token")String token, @RequestParam("user")UserPojo user) {
+    public ResponseEntity<UserPojo> updateUser(@RequestHeader("access_token")String token, @RequestBody UserPojo user) {
         return new ResponseEntity<>(userService.updateUser(token, user), HttpStatus.OK);
     }
 
