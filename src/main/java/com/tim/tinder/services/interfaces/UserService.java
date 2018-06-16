@@ -14,4 +14,6 @@ public interface UserService {
     UserPojo getCurrentUser(String token);
 
     User getUserEntity(Long idUser);
+
+    boolean isUserActive(String token);
 }

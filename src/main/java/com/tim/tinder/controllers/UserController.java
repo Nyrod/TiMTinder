@@ -26,6 +26,11 @@ public class UserController {
         return new ResponseEntity<>(userService.getUser(idUser), HttpStatus.OK);
     }
 
+    @GetMapping("/userActive")
+    public ResponseEntity<Boolean> currentUserActive(@RequestHeader("access_token")String token) {
+        return new ResponseEntity<>(userService.isUserActive(token), HttpStatus.OK);
+    }
+
     @GetMapping("/getCurrentUser")
     public ResponseEntity<UserPojo> getCurrentUser(@RequestHeader("access_token")String token) {
         return new ResponseEntity<>(userService.getCurrentUser(token), HttpStatus.OK);

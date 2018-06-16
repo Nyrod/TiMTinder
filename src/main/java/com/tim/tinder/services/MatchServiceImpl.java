@@ -66,11 +66,19 @@ public class MatchServiceImpl implements MatchService {
         User userFrom = tokenService.getUserByToken(token);
         Match match = matchRepository.findById(idMatch).get();
         if (match.getUserFrom().getIdUser().equals(userFrom.getIdUser())) {
-            match.setFavouriteFrom(true);
+            if(match.getFavouriteFrom()) {
+                match.setFavouriteFrom(false);
+            } else {
+                match.setFavouriteFrom(true);
+            }
             matchRepository.save(match);
             return MatchToMatchPojo.matchToMatchPojo(match, true);
         } else {
-            match.setFavouriteTo(true);
+            if(match.getFavouriteTo()) {
+                match.setFavouriteTo(false);
+            } else {
+                match.setFavouriteTo(true);
+            }
             matchRepository.save(match);
             return MatchToMatchPojo.matchToMatchPojo(match, false);
         }
@@ -120,13 +128,12 @@ public class MatchServiceImpl implements MatchService {
             if (match.getUserFrom().getIdUser().equals(userFrom.getIdUser())) {
                 match.setIsMatched(false);
                 match.setUserFrom(match.getUserTo());
-                match.setUserTo(null);
+                match.setUserTo(userFrom);
                 match.setFavouriteFrom(match.getFavouriteTo());
                 match.setFavouriteTo(false);
 
             } else {
                 match.setIsMatched(false);
-                match.setUserTo(null);
                 match.setFavouriteTo(false);
             }
             matchRepository.save(match);

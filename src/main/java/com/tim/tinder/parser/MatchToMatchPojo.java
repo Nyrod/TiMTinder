@@ -15,9 +15,15 @@ public class MatchToMatchPojo {
         matchPojo.setLikeDate(match.getLikeDate());
         if (isUserFrom) {
             matchPojo.setIdUser(match.getUserTo().getIdUser());
+            if(match.getUserTo().getAvatar() != null) matchPojo.setAvatar(match.getUserTo().getAvatar().getIdPhoto());
+            matchPojo.setName(match.getUserTo().getName());
+            matchPojo.setSurname(match.getUserTo().getSurname());
             matchPojo.setIsFavourite(match.getFavouriteFrom());
         } else {
             matchPojo.setIdUser(match.getUserFrom().getIdUser());
+            if(match.getUserFrom().getAvatar() != null) matchPojo.setAvatar(match.getUserFrom().getAvatar().getIdPhoto());
+            matchPojo.setName(match.getUserFrom().getName());
+            matchPojo.setSurname(match.getUserFrom().getSurname());
             matchPojo.setIsFavourite(match.getFavouriteTo());
         }
 

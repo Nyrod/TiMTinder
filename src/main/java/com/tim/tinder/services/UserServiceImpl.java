@@ -22,6 +22,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isUserActive(String token) {
+        User user = tokenService.getUserByToken(token);
+        if(user == null)
+            return false;
+        if(user.getAvatar() == null || user.getName() == null || user.getSurname() == null || user.getBirthday() == null)
+            return false;
+        return true;
+    }
+
+    @Override
     public void updateLocalization(String token, double lon, double lat) {
         User user = tokenService.getUserByToken(token);
         userRepository.updateLocalization(user.getIdUser(), lon, lat);

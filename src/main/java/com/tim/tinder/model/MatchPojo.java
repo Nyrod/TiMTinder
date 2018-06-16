@@ -15,6 +15,9 @@ public class MatchPojo {
 
     private Long idMatch;
     private Long idUser;
+    private Long avatar;
+    private String name;
+    private String surname;
     private Boolean isFavourite;
     private Date likeDate;
 
