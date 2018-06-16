@@ -85,5 +85,6 @@ public class UserServiceImpl implements UserService {
         user.setIsAdmin(userPojo.getIsAdmin());
         user.setSex(userPojo.getSex());
         user.setLookingFor(userPojo.getLookingFor());
+        user.setInterests(userPojo.getInterests());
     }
 }

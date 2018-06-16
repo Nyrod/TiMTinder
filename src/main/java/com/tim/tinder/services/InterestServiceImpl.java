@@ -49,6 +49,13 @@ public class InterestServiceImpl implements InterestService {
     }
 
     @Override
+    public List<Interest> getAllInterest(String token) {
+        List<Interest> target = new ArrayList<>();
+        interestRepository.findAll().forEach(target::add);
+        return target;
+    }
+
+    @Override
     public int compareInterests(List<Interest> interests1, List<Interest> interests2) {
         int mutualInterest = 0;
         for(Interest interest : interests1) {

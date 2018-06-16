@@ -14,4 +14,6 @@ public interface InterestService {
 
     int compareInterests(List<Interest> interests1, List<Interest> interests2);
 
+    List<Interest> getAllInterest(String token);
+
 }

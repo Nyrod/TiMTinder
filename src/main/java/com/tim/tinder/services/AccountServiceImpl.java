@@ -1,9 +1,11 @@
 package com.tim.tinder.services;
 
 
+import com.tim.tinder.entities.Interest;
 import com.tim.tinder.entities.Match;
 import com.tim.tinder.entities.Token;
 import com.tim.tinder.entities.User;
+import com.tim.tinder.repositories.InterestRepository;
 import com.tim.tinder.repositories.MatchRepository;
 import com.tim.tinder.repositories.TokenRepository;
 import com.tim.tinder.repositories.UserRepository;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -22,18 +25,31 @@ public class AccountServiceImpl implements AccountService {
     private final PasswordEncoder passwordEncoder;
     private final TokenRepository tokenRepository;
     private final MatchRepository matchRepository;
+    private final InterestRepository interestRepository;
 
 
     @Autowired
-    public AccountServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, TokenRepository tokenRepository, MatchRepository matchRepository) {
+    public AccountServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, TokenRepository tokenRepository, MatchRepository matchRepository, InterestRepository interestRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenRepository = tokenRepository;
         this.matchRepository = matchRepository;
+        this.interestRepository = interestRepository;
     }
 
     @Override
     public void register(String login, String password) {
+        Interest interest = new Interest();
+        interest.setName("Ksizka");
+        interestRepository.save(interest);
+        Interest interest2 = new Interest();
+        interest2.setName("Sport");
+        interestRepository.save(interest2);
+        Interest interest3 = new Interest();
+        interest3.setName("Rower");
+        interestRepository.save(interest3);
+
+
         User user2 = new User();
         user2.setLogin("Lewy");
         user2.setPassword(passwordEncoder.encode("123"));
@@ -47,6 +63,8 @@ public class AccountServiceImpl implements AccountService {
         user2.setPhone("248 598 127");
         user2.setLat(52.232001000000004);
         user2.setLon(20.9838439);
+        user2.setInterests(new ArrayList<>());
+        user2.getInterests().add(interest2);
         userRepository.save(user2);
 
         User user3 = new User();

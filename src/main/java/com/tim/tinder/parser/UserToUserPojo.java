@@ -1,5 +1,6 @@
 package com.tim.tinder.parser;
 
+import com.tim.tinder.entities.Interest;
 import com.tim.tinder.entities.User;
 import com.tim.tinder.model.UserPojo;
 
@@ -27,6 +28,9 @@ public class UserToUserPojo {
             userPojo.setAvatar(user.getAvatar().getIdPhoto());
         }
 
+        List<Interest> inter = new ArrayList<>();
+        user.getInterests().forEach(a -> inter.add(a));
+        userPojo.setInterests(inter);
         return userPojo;
     }
 }
