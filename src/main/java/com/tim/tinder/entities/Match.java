@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,8 +26,8 @@ public class Match {
     @ManyToOne
     private User userTo;
 
-    @OneToMany
-    private List<Message> messages;
+    @OneToMany(mappedBy = "match", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Message> messages = new ArrayList<>();
 
     private Boolean isMatched;
     private Date likeDate;

@@ -9,18 +9,22 @@ import java.util.Date;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class ChatMessage {
+@NoArgsConstructor
+public class ResponseChatMessage {
 
-    private String token;
-    private String message;
+    Long idMatch;
+    Long idSender;
+    String message;
+    Date date;
 
     @Override
     public String toString() {
-        return "ChatMessage{" +
-                "idSender=" + token +
+        return "ResponseChatMessage{" +
+                "idMatch=" + idMatch +
+                ", idSender=" + idSender +
                 ", message='" + message + '\'' +
+                ", date=" + date +
                 '}';
     }
 }

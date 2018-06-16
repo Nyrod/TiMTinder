@@ -79,50 +79,50 @@ public class AccountServiceImpl implements AccountService {
         user4.setLon(20.9838439);
         userRepository.save(user4);
 
-//        Match match = new Match();
-//        match.setUserTo(user2);
-//        match.setUserFrom(user3);
-//        match.setIsMatched(false);
-//        match.setLikeDate(new Date());
-//        match.setFavouriteTo(false);
-//        match.setFavouriteFrom(false);
-//        matchRepository.save(match);
-//
-//        Match match2 = new Match();
-//        match2.setUserTo(user2);
-//        match2.setUserFrom(user4);
-//        match2.setIsMatched(false);
-//        match2.setLikeDate(new Date());
-//        match2.setFavouriteTo(false);
-//        match2.setFavouriteFrom(false);
-//        matchRepository.save(match2);
-//
-//        Match match4 = new Match();
-//        match4.setUserTo(user3);
-//        match4.setUserFrom(user2);
-//        match4.setIsMatched(false);
-//        match4.setLikeDate(new Date());
-//        match4.setFavouriteTo(false);
-//        match4.setFavouriteFrom(false);
-//        matchRepository.save(match4);
-//
-//        Match match5 = new Match();
-//        match5.setUserTo(user4);
-//        match5.setUserFrom(user2);
-//        match5.setIsMatched(false);
-//        match5.setLikeDate(new Date());
-//        match5.setFavouriteTo(false);
-//        match5.setFavouriteFrom(false);
-//        matchRepository.save(match5);
-//
-//        Match match3 = new Match();
-//        match3.setUserTo(user3);
-//        match3.setUserFrom(user2);
-//        match3.setIsMatched(true);
-//        match3.setLikeDate(new Date());
-//        match3.setFavouriteTo(false);
-//        match3.setFavouriteFrom(true);
-//        matchRepository.save(match3);
+        Match match = new Match();
+        match.setUserTo(user2);
+        match.setUserFrom(user3);
+        match.setIsMatched(false);
+        match.setLikeDate(new Date());
+        match.setFavouriteTo(false);
+        match.setFavouriteFrom(false);
+        matchRepository.save(match);
+
+        Match match2 = new Match();
+        match2.setUserTo(user2);
+        match2.setUserFrom(user4);
+        match2.setIsMatched(false);
+        match2.setLikeDate(new Date());
+        match2.setFavouriteTo(false);
+        match2.setFavouriteFrom(false);
+        matchRepository.save(match2);
+
+        Match match4 = new Match();
+        match4.setUserTo(user3);
+        match4.setUserFrom(user2);
+        match4.setIsMatched(false);
+        match4.setLikeDate(new Date());
+        match4.setFavouriteTo(false);
+        match4.setFavouriteFrom(false);
+        matchRepository.save(match4);
+
+        Match match5 = new Match();
+        match5.setUserTo(user4);
+        match5.setUserFrom(user2);
+        match5.setIsMatched(false);
+        match5.setLikeDate(new Date());
+        match5.setFavouriteTo(false);
+        match5.setFavouriteFrom(false);
+        matchRepository.save(match5);
+
+        Match match3 = new Match();
+        match3.setUserTo(user3);
+        match3.setUserFrom(user2);
+        match3.setIsMatched(true);
+        match3.setLikeDate(new Date());
+        match3.setFavouriteTo(false);
+        match3.setFavouriteFrom(true);
+        matchRepository.save(match3);
 
         if (!checkIfLoginExist(login)) {
             User user = new User();
