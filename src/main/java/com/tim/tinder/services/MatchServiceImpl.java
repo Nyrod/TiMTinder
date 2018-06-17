@@ -163,22 +163,58 @@ public class MatchServiceImpl implements MatchService {
         List<User> userList = userRepository.findTop10ByIdUserGreaterThanOrderByIdUserAsc(idCurrent);
         userList.forEach(a -> System.out.println(UserToUserPojo.userToUserPojo(a)));
         while(!found) {
-            if(userList.size() == 0)
-                found = true;
-            for(User userCheck : userList) {
-                if(!userCheck.getIdUser().equals(user.getIdUser())) {
-                    if(distanceBetweenPoints(user.getLon(), userCheck.getLon(), user.getLat(), userCheck.getLat()) <= searchDistance) {
-                        if(interestService.compareInterests(user.getInterests(), userCheck.getInterests()) >= user.getInterests().size()/3) {
-                            return UserToUserPojo.userToUserPojo(user);
+            for (User userCheck : userList) {
+                if (!ifUserActive(userCheck) || userCheck.getIdUser().equals(user.getIdUser())) {
+                    continue;
+                }
+                if(isMatchBetweenUsers(user, userCheck)){
+                    continue;
+                }
+                if (distanceBetweenPoints(user.getLon(), userCheck.getLon(), user.getLat(), userCheck.getLat()) <= searchDistance) {
+                    if (user.getLookingFor().equals("B") || (user.getLookingFor().equals(userCheck.getSex()))) {
+                        if (interestService.compareInterests(user.getInterests(), userCheck.getInterests()) >= user.getInterests().size() / 3) {
+                            return UserToUserPojo.userToUserPojo(userCheck);
                         }
                     }
                 }
             }
-            userList = userRepository.findTop10ByIdUserGreaterThanOrderByIdUserAsc(idCurrent);
+            if (userList.size() == 0) {
+                found = true;
+            } else {
+                userList = userRepository.findTop10ByIdUserGreaterThanOrderByIdUserAsc(userList.get(userList.size() - 1).getIdUser());
+            }
         }
         return new UserPojo();
     }
 
+    private boolean ifUserActive(User user) {
+        if(user.getName() == null || user.getSurname() == null)
+            return false;
+//        if(user.getBirthday() == null || user.getAvatar() == null)
+//            return false;
+        if(user.getLat() == null || user.getLon() == null)
+            return false;
+        if(user.getSex() == null || user.getLookingFor() == null)
+            return false;
+
+        return true;
+    }
+
+    private boolean isMatchBetweenUsers(User user1, User user2) {
+        List<Match> matches = user1.getMatchesGiven();
+        for(Match match: matches) {
+            if(match.getUserTo().getIdUser().equals(user2.getIdUser()))
+                return true;
+        }
+        matches = user1.getMatchesReceived();
+        for(Match match: matches) {
+            if(match.getIsMatched()) {
+                if(match.getUserFrom().getIdUser().equals(user2.getIdUser()))
+                    return true;
+            }
+        }
+        return false;
+    }
 
     private double distanceBetweenPoints(double lon1, double lon2, double lat1, double lat2) {
 

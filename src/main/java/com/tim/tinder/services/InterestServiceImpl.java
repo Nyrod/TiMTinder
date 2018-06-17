@@ -58,11 +58,22 @@ public class InterestServiceImpl implements InterestService {
     @Override
     public int compareInterests(List<Interest> interests1, List<Interest> interests2) {
         int mutualInterest = 0;
-        for(Interest interest : interests1) {
-            if(interests2.contains(interest)) {
-                mutualInterest++;
+        interests1.stream().forEach(System.out::println);
+        interests2.stream().forEach(System.out::println);
+        if(interests1.size() > interests2.size()) {
+            for(Interest interest : interests1) {
+                if(interests2.contains(interest)) {
+                    mutualInterest++;
+                }
+            }
+        } else {
+            for(Interest interest : interests2) {
+                if(interests1.contains(interest)) {
+                    mutualInterest++;
+                }
             }
         }
+
         return mutualInterest;
     }
 }

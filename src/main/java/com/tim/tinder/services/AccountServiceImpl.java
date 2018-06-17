@@ -56,7 +56,7 @@ public class AccountServiceImpl implements AccountService {
         user2.setName("Robert");
         user2.setSurname("Lewandowski");
         user2.setSex("M");
-        user2.setLookingFor("F");
+        user2.setLookingFor("B");
         user2.setDescription("SZCZELAM KARNE");
         user2.setIsAdmin(false);
         user2.setBirthday(new GregorianCalendar(1980, 8, 15).getTime());
@@ -78,6 +78,8 @@ public class AccountServiceImpl implements AccountService {
         user3.setIsAdmin(false);
         user3.setBirthday(new GregorianCalendar(1950, 8, 15).getTime());
         user3.setPhone("248 598 127");
+        user3.setInterests(new ArrayList<>());
+        user3.getInterests().add(interestRepository.findById(2L).get());
         user3.setLat(52.232001000000004);
         user3.setLon(20.9838439);
         userRepository.save(user3);

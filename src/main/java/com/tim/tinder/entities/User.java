@@ -20,7 +20,7 @@ public class User {
     @GeneratedValue
     private Long idUser;
 
-    @OneToMany
+    @ManyToMany
     private List<Interest> interests;
 
     @OneToMany
