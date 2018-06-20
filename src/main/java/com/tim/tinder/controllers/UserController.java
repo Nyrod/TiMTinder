@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/rest/user")
 @CrossOrigin("http://localhost:4200")
@@ -24,6 +26,17 @@ public class UserController {
     @GetMapping("/getUser")
     public ResponseEntity<UserPojo> getUser(@RequestParam("idUser")Long idUser) {
         return new ResponseEntity<>(userService.getUser(idUser), HttpStatus.OK);
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<UserPojo>> getAllUsers(@RequestHeader("access_token")String token) {
+        return new ResponseEntity<>(userService.gerAllUser(token), HttpStatus.OK);
+    }
+
+    @PostMapping("/deleteUser")
+    public ResponseEntity<Response> deleteUser(@RequestHeader("access_token")String token, @RequestParam("idUser")Long idUser) {
+        userService.deleteUser(token, idUser);
+        return new ResponseEntity<>(new Response("Usunieto"), HttpStatus.OK);
     }
 
     @GetMapping("/userActive")

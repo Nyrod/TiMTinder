@@ -9,6 +9,9 @@ import com.tim.tinder.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -19,6 +22,26 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository, TokenService tokenService) {
         this.userRepository = userRepository;
         this.tokenService = tokenService;
+    }
+
+    @Override
+    public void deleteUser(String token, Long idUser) {
+        User user = tokenService.getUserByToken(token);
+        if(!user.getIsAdmin()) {
+            return;
+        }
+        this.userRepository.delete(userRepository.findById(idUser).get());
+    }
+
+    @Override
+    public List<UserPojo> gerAllUser(String token) {
+        User user = tokenService.getUserByToken(token);
+        if(!user.getIsAdmin()) {
+            return new ArrayList<>();
+        }
+        List<UserPojo> ret = new ArrayList<>();
+        userRepository.findAll().forEach(user1 -> ret.add(UserToUserPojo.userToUserPojo(user1)));
+        return ret;
     }
 
     @Override

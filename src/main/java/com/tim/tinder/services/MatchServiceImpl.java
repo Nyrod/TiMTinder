@@ -170,11 +170,12 @@ public class MatchServiceImpl implements MatchService {
                 if(isMatchBetweenUsers(user, userCheck)){
                     continue;
                 }
+                System.out.println(distanceBetweenPoints(user.getLon(), userCheck.getLon(), user.getLat(), userCheck.getLat()));
                 if (distanceBetweenPoints(user.getLon(), userCheck.getLon(), user.getLat(), userCheck.getLat()) <= searchDistance) {
                     if (user.getLookingFor().equals("B") || (user.getLookingFor().equals(userCheck.getSex()))) {
-                        if (interestService.compareInterests(user.getInterests(), userCheck.getInterests()) >= user.getInterests().size() / 3) {
+                        //if (interestService.compareInterests(user.getInterests(), userCheck.getInterests()) >= user.getInterests().size() / 3) {
                             return UserToUserPojo.userToUserPojo(userCheck);
-                        }
+                        //}
                     }
                 }
             }

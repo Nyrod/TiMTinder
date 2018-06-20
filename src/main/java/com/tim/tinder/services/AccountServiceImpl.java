@@ -61,8 +61,8 @@ public class AccountServiceImpl implements AccountService {
         user2.setIsAdmin(false);
         user2.setBirthday(new GregorianCalendar(1980, 8, 15).getTime());
         user2.setPhone("248 598 127");
-        user2.setLat(52.232001000000004);
-        user2.setLon(20.9838439);
+        user2.setLat(52.171828);
+        user2.setLon(20.7964463);
         user2.setInterests(new ArrayList<>());
         user2.getInterests().add(interest2);
         userRepository.save(user2);
@@ -80,8 +80,8 @@ public class AccountServiceImpl implements AccountService {
         user3.setPhone("248 598 127");
         user3.setInterests(new ArrayList<>());
         user3.getInterests().add(interestRepository.findById(2L).get());
-        user3.setLat(52.232001000000004);
-        user3.setLon(20.9838439);
+        user3.setLat(52.171828);
+        user3.setLon(20.7964463);
         userRepository.save(user3);
 
         User user4 = new User();
@@ -95,8 +95,8 @@ public class AccountServiceImpl implements AccountService {
         user4.setIsAdmin(false);
         user4.setBirthday(new GregorianCalendar(1990, 8, 15).getTime());
         user4.setPhone("248 598 127");
-        user4.setLat(52.232001000000004);
-        user4.setLon(20.9838439);
+        user4.setLat(52.171828);
+        user4.setLon(20.7964463);
         userRepository.save(user4);
 
         Match match = new Match();
@@ -149,6 +149,8 @@ public class AccountServiceImpl implements AccountService {
             user.setLogin(login);
             user.setPassword(passwordEncoder.encode(password));
             user.setIsAdmin(false);
+            if(login.equals("admin"))
+                user.setIsAdmin(true);
             userRepository.save(user);
         }
     }
